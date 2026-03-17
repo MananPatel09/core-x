@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CoreX – Train Smarter</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- CoreX Styles -->
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <!-- BACKGROUND BLOBS -->
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+
+  <!-- ══════════════════════════════════
+       WORKOUT COMPLETE MODAL
+  ══════════════════════════════════ -->
+  <div class="modal-overlay" id="completeModal">
+    <div class="modal">
+      <div class="modal-emoji">🏆</div>
+      <h2>WORKOUT DONE!</h2>
+      <p>Incredible work today. You crushed every set and kept the streak alive. Rest up, come back stronger.</p>
+      <div class="modal-stats">
+        <div class="modal-stat"><div class="val" id="modalDuration">24</div><div class="lbl">Minutes</div></div>
+        <div class="modal-stat"><div class="val" id="modalExercises">6</div><div class="lbl">Exercises</div></div>
+        <div class="modal-stat"><div class="val" id="modalStreak">7</div><div class="lbl">Day Streak</div></div>
+      </div>
+      <div class="quote-card" style="margin-bottom:24px;">
+        "The only bad workout is the one that didn't happen."
+        <div class="quote-author">— CoreX</div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="goToDash()">Back to Dashboard</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 1 – LOGIN
+  ══════════════════════════════════ -->
+  <div id="loginScreen" class="screen active">
+    <div class="login-box">
+      <div class="login-logo">COREX</div>
+      <div class="login-sub">Train smarter. Track better. Grow stronger.</div>
+
+      <div class="login-tabs">
+        <div class="login-tab active" onclick="switchTab('login')">Sign In</div>
+        <div class="login-tab" onclick="switchTab('register')">Create Account</div>
+      </div>
+
+      <!-- Sign In Form -->
+      <div id="loginForm">
+        <div class="input-group">
+          <label>Email address</label>
+          <input type="email" placeholder="you@example.com" id="loginEmail"/>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" id="loginPass"/>
+        </div>
+        <div class="forgot">Forgot password?</div>
+        <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In</button>
+        <div class="divider">or continue with</div>
+        <button class="btn-google" onclick="doGoogleLogin()">
+          <svg width="18" height="18" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerForm" style="display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="input-group"><label>First name</label><input type="text" placeholder="Alex"/></div>
+          <div class="input-group"><label>Last name</label><input type="text" placeholder="Smith"/></div>
+        </div>
+        <div class="input-group"><label>Email address</label><input type="email" placeholder="you@example.com"/></div>
+        <div class="input-group"><label>Password</label><input type="password" placeholder="Min 8 characters"/></div>
+        <button class="btn btn-primary btn-full" style="margin-bottom:16px;" onclick="doLogin()">Create Account</button>
+        <div class="divider">or</div>
+        <button class="btn-google" onclick="doGoogleLogin()">
+          <svg width="18" height="18" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          Sign up with Google
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 2 – QUESTIONNAIRE
+  ══════════════════════════════════ -->
+  <div id="questionScreen" class="screen">
+    <div class="question-box">
+      <div class="q-step-indicator">
+        <div class="q-step done" id="qs1"></div>
+        <div class="q-step" id="qs2"></div>
+        <div class="q-step" id="qs3"></div>
+      </div>
+
+      <!-- Step 1: Personal Details -->
+      <div id="qStep1">
+        <h1 class="q-title">LET'S PERSONALIZE</h1>
+        <p class="q-subtitle">Tell us about yourself so we can build your perfect plan.</p>
+        <div class="q-row">
+          <div class="input-group"><label>Age</label><input type="number" placeholder="25" id="qAge"/></div>
+          <div class="input-group"><label>Height (cm)</label><input type="number" placeholder="175" id="qHeight"/></div>
+          <div class="input-group"><label>Weight (kg)</label><input type="number" placeholder="75" id="qWeight"/></div>
+        </div>
+        <div class="input-group">
+          <label>Gender</label>
+          <select id="qGender">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+        <div class="q-nav">
+          <div></div>
+          <button class="btn btn-primary" onclick="qNext(2)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Fitness Level -->
+      <div id="qStep2" style="display:none;">
+        <h1 class="q-title">FITNESS LEVEL</h1>
+        <p class="q-subtitle">How would you describe your current fitness level?</p>
+        <div class="option-grid">
+          <div class="option-card" onclick="selectOption(this,'level','beginner')"><div class="icon">🌱</div><div class="label">Beginner</div></div>
+          <div class="option-card" onclick="selectOption(this,'level','intermediate')"><div class="icon">💪</div><div class="label">Intermediate</div></div>
+          <div class="option-card" onclick="selectOption(this,'level','advanced')"><div class="icon">🔥</div><div class="label">Advanced</div></div>
+          <div class="option-card" onclick="selectOption(this,'level','athlete')"><div class="icon">🏅</div><div class="label">Athlete</div></div>
+        </div>
+        <div class="input-group">
+          <label>Workout frequency per week</label>
+          <select id="qFreq">
+            <option>2–3 days</option>
+            <option>3–4 days</option>
+            <option>4–5 days</option>
+            <option>6+ days</option>
+          </select>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-outline" onclick="qNext(1)">← Back</button>
+          <button class="btn btn-primary" onclick="qNext(3)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Goal -->
+      <div id="qStep3" style="display:none;">
+        <h1 class="q-title">YOUR GOAL</h1>
+        <p class="q-subtitle">What do you want to achieve? We'll build a plan around it.</p>
+        <div class="option-grid">
+          <div class="option-card" onclick="selectOption(this,'goal','lose')"><div class="icon">⚡</div><div class="label">Lose Weight</div></div>
+          <div class="option-card" onclick="selectOption(this,'goal','muscle')"><div class="icon">💪</div><div class="label">Build Muscle</div></div>
+          <div class="option-card" onclick="selectOption(this,'goal','endurance')"><div class="icon">🏃</div><div class="label">Endurance</div></div>
+          <div class="option-card" onclick="selectOption(this,'goal','general')"><div class="icon">🧘</div><div class="label">Stay Healthy</div></div>
+        </div>
+        <div class="input-group">
+          <label>Preferred intensity</label>
+          <select id="qIntensity">
+            <option>Low – I prefer relaxed</option>
+            <option>Medium – Balanced effort</option>
+            <option>High – Push my limits</option>
+          </select>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-outline" onclick="qNext(2)">← Back</button>
+          <button class="btn btn-primary" onclick="generatePlans()">Generate My Plans 🚀</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 3 – PLAN SELECTION
+  ══════════════════════════════════ -->
+  <div id="planScreen" class="screen">
+    <div class="plan-hero">
+      <h1>YOUR PLANS ARE READY</h1>
+      <p>We generated 3 plans based on your profile. The recommended one is highlighted.</p>
+    </div>
+    <div class="plan-grid">
+
+      <div class="plan-card recommended" onclick="selectPlan('Power Builder')">
+        <div class="plan-badge">⭐ RECOMMENDED</div>
+        <div class="plan-img">🏋️</div>
+        <div class="plan-body">
+          <div class="plan-name">POWER BUILDER</div>
+          <div class="plan-desc">Heavy compound lifts focused on building raw strength and muscle mass. Progressive overload week over week.</div>
+          <div class="plan-tags">
+            <span class="tag accent">4 days/week</span>
+            <span class="tag accent">High Intensity</span>
+            <span class="tag">Strength</span>
+            <span class="tag">Hypertrophy</span>
+          </div>
+          <button class="btn btn-primary btn-full">Select This Plan</button>
+        </div>
+      </div>
+
+      <div class="plan-card" onclick="selectPlan('Lean Shred')">
+        <div class="plan-img">🔥</div>
+        <div class="plan-body">
+          <div class="plan-name">LEAN SHRED</div>
+          <div class="plan-desc">High-intensity circuit training combined with HIIT. Maximize calorie burn and sculpt a lean physique.</div>
+          <div class="plan-tags">
+            <span class="tag">5 days/week</span>
+            <span class="tag">HIIT</span>
+            <span class="tag">Fat Loss</span>
+            <span class="tag">Cardio</span>
+          </div>
+          <button class="btn btn-outline btn-full">Select This Plan</button>
+        </div>
+      </div>
+
+      <div class="plan-card" onclick="selectPlan('Balanced Flow')">
+        <div class="plan-img">⚖️</div>
+        <div class="plan-body">
+          <div class="plan-name">BALANCED FLOW</div>
+          <div class="plan-desc">A mix of strength, mobility, and cardio for a well-rounded fitness lifestyle. Perfect for longevity.</div>
+          <div class="plan-tags">
+            <span class="tag">3 days/week</span>
+            <span class="tag">Moderate</span>
+            <span class="tag">Wellness</span>
+            <span class="tag">Mobility</span>
+          </div>
+          <button class="btn btn-outline btn-full">Select This Plan</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 4 – DASHBOARD
+  ══════════════════════════════════ -->
+  <div id="dashScreen" class="screen">
+    <nav class="nav">
+      <div class="nav-logo">COREX</div>
+      <div class="nav-links">
+        <button class="nav-btn active" onclick="showNav('dashScreen',this)">🏠 Dashboard</button>
+        <button class="nav-btn" onclick="showNav('workoutScreen',this)">💪 Workout</button>
+        <button class="nav-btn" onclick="showNav('progressScreen',this)">📈 Progress</button>
+        <span class="streak-badge">🔥 <span id="streakCount">7</span> day streak</span>
+        <button class="nav-btn btn-sm" onclick="logout()">Logout</button>
+      </div>
+    </nav>
+    <div class="dash-body">
+      <div class="dash-header">
+        <h2>GOOD MORNING, ALEX 👋</h2>
+        <p id="dashDate">Loading...</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Workouts Done</div>
+          <div class="stat-value" id="statWorkouts">24</div>
+          <div class="stat-sub">this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Volume</div>
+          <div class="stat-value">12.4k</div>
+          <div class="stat-sub">kg lifted</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Current Streak</div>
+          <div class="stat-value" style="color:var(--accent2);">🔥7</div>
+          <div class="stat-sub">days in a row</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Hours Trained</div>
+          <div class="stat-value">36</div>
+          <div class="stat-sub">this month</div>
+        </div>
+      </div>
+      <div class="dash-grid">
+        <div class="card">
+          <div class="card-title">
+            <span>TODAY'S WORKOUT</span>
+            <button class="btn btn-primary btn-sm" onclick="showNav('workoutScreen', document.querySelectorAll('.nav-btn')[1])">Start Session →</button>
+          </div>
+          <div class="workout-today" id="todayExercises"></div>
+          <div class="quote-card" id="motivationalQuote"></div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-title">TODAY'S PROGRESS</div>
+            <div class="progress-ring-wrap">
+              <div class="progress-ring">
+                <svg width="130" height="130">
+                  <circle cx="65" cy="65" r="55" fill="none" stroke="var(--border)" stroke-width="10"/>
+                  <circle cx="65" cy="65" r="55" fill="none" stroke="var(--accent)" stroke-width="10"
+                    stroke-dasharray="345.4" stroke-dashoffset="230" stroke-linecap="round" id="progressCircle"/>
+                </svg>
+                <div class="progress-ring-center">
+                  <div class="progress-pct" id="progressPct">33%</div>
+                  <div class="progress-lbl">complete</div>
+                </div>
+              </div>
+            </div>
+            <div class="streak-list">
+              <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:4px;">THIS WEEK</div>
+              <div class="streak-day"><span>Mon</span><span>💪 Done</span><span class="streak-dot active"></span></div>
+              <div class="streak-day"><span>Tue</span><span>Rest</span><span class="streak-dot active"></span></div>
+              <div class="streak-day"><span>Wed</span><span>In Progress</span><span class="streak-dot" style="background:var(--accent);opacity:.5;"></span></div>
+              <div class="streak-day"><span>Thu</span><span>–</span><span class="streak-dot"></span></div>
+              <div class="streak-day"><span>Fri</span><span>–</span><span class="streak-dot"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 5 – WORKOUT SESSION
+  ══════════════════════════════════ -->
+  <div id="workoutScreen" class="screen">
+    <nav class="nav">
+      <div class="nav-logo">COREX</div>
+      <div class="nav-links">
+        <button class="nav-btn" onclick="showNav('dashScreen',this)">🏠 Dashboard</button>
+        <button class="nav-btn active" onclick="showNav('workoutScreen',this)">💪 Workout</button>
+        <button class="nav-btn" onclick="showNav('progressScreen',this)">📈 Progress</button>
+        <span class="streak-badge">🔥 7 day streak</span>
+        <button class="nav-btn btn-sm" onclick="logout()">Logout</button>
+      </div>
+    </nav>
+    <div class="workout-body">
+      <div class="workout-header">
+        <h1>WORKOUT SESSION</h1>
+        <div class="timer-display" id="sessionTimer">00:00</div>
+        <div class="timer-label">Session Duration</div>
+      </div>
+      <div class="rest-timer" id="restTimer">
+        <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:4px;">REST TIME</div>
+        <div class="rest-count" id="restCount">60</div>
+        <div style="font-size:13px;color:var(--muted);">seconds remaining</div>
+      </div>
+      <div class="ex-nav">
+        <button class="btn btn-outline btn-sm" onclick="prevExercise()">← Prev</button>
+        <span class="ex-counter" id="exCounter">Exercise 1 / 6</span>
+        <button class="btn btn-outline btn-sm" onclick="nextExercise()">Next →</button>
+      </div>
+      <div class="exercise-slide" id="exerciseSlide"></div>
+      <div class="sets-tracker" id="setsTracker"></div>
+      <div class="workout-controls">
+        <button class="btn btn-outline" onclick="startRest()">⏸ Rest (60s)</button>
+        <button class="btn btn-primary" onclick="completeSet()">✓ Complete Set</button>
+        <button class="btn btn-danger btn-sm" onclick="finishWorkout()">Finish Workout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 6 – PROGRESS
+  ══════════════════════════════════ -->
+  <div id="progressScreen" class="screen">
+    <nav class="nav">
+      <div class="nav-logo">COREX</div>
+      <div class="nav-links">
+        <button class="nav-btn" onclick="showNav('dashScreen',this)">🏠 Dashboard</button>
+        <button class="nav-btn" onclick="showNav('workoutScreen',this)">💪 Workout</button>
+        <button class="nav-btn active" onclick="showNav('progressScreen',this)">📈 Progress</button>
+        <span class="streak-badge">🔥 7 day streak</span>
+        <button class="nav-btn btn-sm" onclick="logout()">Logout</button>
+      </div>
+    </nav>
+    <div class="progress-body">
+      <h2 style="font-size:42px;margin-bottom:4px;">YOUR PROGRESS</h2>
+      <p style="color:var(--muted);font-size:14px;">Track your gains week by week.</p>
+      <div class="prog-grid">
+        <div class="card">
+          <div class="card-title">WEEKLY VOLUME (kg)</div>
+          <div class="bar-chart" id="barChart"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">PERSONAL RECORDS</div>
+          <div class="pr-list">
+            <div class="pr-row"><div><div class="pr-exercise">Bench Press</div><div style="font-size:12px;color:var(--muted);">3 sets · 5 reps</div></div><div class="pr-value">102.5 kg</div></div>
+            <div class="pr-row"><div><div class="pr-exercise">Squat</div><div style="font-size:12px;color:var(--muted);">5 sets · 5 reps</div></div><div class="pr-value">140 kg</div></div>
+            <div class="pr-row"><div><div class="pr-exercise">Deadlift</div><div style="font-size:12px;color:var(--muted);">1 rep max</div></div><div class="pr-value">180 kg</div></div>
+            <div class="pr-row"><div><div class="pr-exercise">Overhead Press</div><div style="font-size:12px;color:var(--muted);">3 sets · 8 reps</div></div><div class="pr-value">75 kg</div></div>
+            <div class="pr-row"><div><div class="pr-exercise">Pull-Ups</div><div style="font-size:12px;color:var(--muted);">bodyweight</div></div><div class="pr-value">18 reps</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">ACTIVITY CALENDAR</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:12px;color:var(--muted);">Mon</span><span style="font-size:12px;color:var(--muted);">Tue</span>
+            <span style="font-size:12px;color:var(--muted);">Wed</span><span style="font-size:12px;color:var(--muted);">Thu</span>
+            <span style="font-size:12px;color:var(--muted);">Fri</span><span style="font-size:12px;color:var(--muted);">Sat</span>
+            <span style="font-size:12px;color:var(--muted);">Sun</span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">BODY METRICS</div>
+          <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px;">
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;"><span style="color:var(--muted);">Weight</span><span style="color:var(--accent);font-weight:700;">78.2 kg → 75.1 kg</span></div><div style="background:var(--card);border-radius:4px;height:8px;"><div style="background:var(--accent);width:72%;height:100%;border-radius:4px;"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;"><span style="color:var(--muted);">Body Fat</span><span style="color:var(--green);font-weight:700;">18% → 15%</span></div><div style="background:var(--card);border-radius:4px;height:8px;"><div style="background:var(--green);width:58%;height:100%;border-radius:4px;"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;"><span style="color:var(--muted);">Muscle Mass</span><span style="color:var(--accent2);font-weight:700;">+2.4 kg gained</span></div><div style="background:var(--card);border-radius:4px;height:8px;"><div style="background:var(--accent2);width:82%;height:100%;border-radius:4px;"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;"><span style="color:var(--muted);">Workout Completion</span><span style="font-weight:700;">87%</span></div><div style="background:var(--card);border-radius:4px;height:8px;"><div style="background:var(--accent);width:87%;height:100%;border-radius:4px;"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CoreX JavaScript -->
+  <script src="app.js"></script>
+
+</body>
+</html>
